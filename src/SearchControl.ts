@@ -383,9 +383,15 @@ const Control: SearchControl = {
 
   async onSubmit(query) {
     this.resultList.clear();
-    const { provider } = this.options;
 
-    const results = await provider!.search(query);
+    let results = null;
+
+    if (query?.data) {
+      results = [query.data];
+    } else {
+      const { provider } = this.options;
+      results = await provider!.search(query);
+    }
 
     if (results && results.length > 0) {
       this.showResult(results[0], query);
